@@ -73,10 +73,23 @@ modded class MissionServer
 		// All checks passed - create fire and ignite it
 		fire.PlaceOnSurface();
 		fire.Synchronize();
-		fire.GetInventory().CreateAttachment("Firewood");
-		fire.GetInventory().CreateAttachment("WoodenStick");
-		fire.GetInventory().CreateAttachment("Rag");
 
+		// Create tinder & fuel
+		ItemBase wood = ItemBase.Cast(fire.GetInventory().CreateAttachment("Firewood"));
+		ItemBase stick = ItemBase.Cast(fire.GetInventory().CreateAttachment("WoodenStick"));
+		ItemBase rag = ItemBase.Cast(fire.GetInventory().CreateAttachment("Rag"));
+
+		// Lock tinder & fuel
+		if (wood)
+			wood.LockToParent();
+
+		if (stick)
+			stick.LockToParent();
+		
+		if (rag)
+			rag.LockToParent();
+
+		// Ignite fire
 		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(StartFire, 100, false, fire);
 	}
 

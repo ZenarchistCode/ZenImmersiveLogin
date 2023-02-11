@@ -6,8 +6,8 @@ modded class PlayerBase
 	private static const float DEFAULT_SPAWNFX_DURATION = 500;
 	private float m_SpawnDarkeningCurrentTime = DEFAULT_SPAWNFX_DURATION;
 	// Whether or not to set player invisible during login
-	private bool m_ImmersiveLoginInvisible = true;
 	private bool m_PlayerHasLoggedIn = false;
+	bool m_ImmersiveLoginInvisible = true;
 
 	// Reset and register login sync flag
 	override void Init()
