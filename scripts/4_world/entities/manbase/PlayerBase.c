@@ -109,13 +109,24 @@ modded class PlayerBase
 		// Stop player movement
 		GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
 		GetGame().GetMission().GetHud().ShowQuickbarUI(false);
+		GetActionManager().EnableActions(false);
 
-		// Lie down
-		if (GetEmoteManager() && GetEmoteManager().CanPlayEmote(EmoteConstants.ID_EMOTE_LYINGDOWN))
-			GetEmoteManager().CreateEmoteCBFromMenu(EmoteConstants.ID_EMOTE_LYINGDOWN);
+		if (GetEmoteManager() && !IsRestrained() && !IsUnconscious())
+		{
+			// Lie down or sit
+			if (GetEmoteManager().CanPlayEmote(EmoteConstants.ID_EMOTE_LYINGDOWN))
+			{
+				GetEmoteManager().CreateEmoteCBFromMenu(EmoteConstants.ID_EMOTE_LYINGDOWN);
+			}
+			else
+			{
+				GetEmoteManager().CreateEmoteCBFromMenu(EmoteConstants.ID_EMOTE_SITA);
+				GetEmoteManager().GetEmoteLauncher().SetForced(EmoteLauncher.FORCE_DIFFERENT);
+			}
+		}
 
 		// Blackout screen
-		PPERequester_ZenSpawnEffects ppeEffect = PPERequesterBank.GetRequester(PPERequester_ZenSpawnEffects);
+		PPERequester_ZenSpawnEffects ppeEffect = PPERequester_ZenSpawnEffects.Cast(PPERequesterBank.GetRequester(PPERequester_ZenSpawnEffects));
 		ppeEffect.SetEffectValues(200);
 
 		// Mute volume
@@ -130,6 +141,7 @@ modded class PlayerBase
 	{
 		// Enable controls, start opening eyes fx, and slowly fade-in volume
 		GetGame().GetMission().PlayerControlEnable(true);
+		GetActionManager().EnableActions(true);
 		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(UpdateSpawnDarknessLevel, 1, false);
 		GetGame().GetSoundScene().SetSoundVolume(g_Game.m_volume_sound, 5);
 	}
@@ -144,7 +156,7 @@ modded class PlayerBase
 		m_SpawnDarkeningCurrentTime -= 1;
 		
 		// Update fx values
-		PPERequester_ZenSpawnEffects ppeEffect = PPERequesterBank.GetRequester(PPERequester_ZenSpawnEffects);
+		PPERequester_ZenSpawnEffects ppeEffect = PPERequester_ZenSpawnEffects.Cast(PPERequesterBank.GetRequester(PPERequester_ZenSpawnEffects));
 		ppeEffect.SetEffectValues(percentage);
 
 		// If animation of opening eyes is over, stop updating.
