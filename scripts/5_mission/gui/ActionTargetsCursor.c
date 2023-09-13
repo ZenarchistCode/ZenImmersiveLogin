@@ -1,14 +1,10 @@
-// While player is 'invisible', they're logging in, so hide the target HUD or else they'll know their character is using the lie-down emote
 modded class ActionTargetsCursor
 {
+	// Hide action target cursor until player has completed lie-down emote
 	override void Update()
 	{
-		if (m_Player && m_Player.m_ImmersiveLoginInvisible)
-		{
-			m_Root.Show(false);
-			m_CachedObject.Invalidate();
-			return;
-		}
+		if (m_Player && m_Player.GetSimulationTimeStamp() < 300)
+			m_Hidden = true;
 
 		super.Update();
 	};

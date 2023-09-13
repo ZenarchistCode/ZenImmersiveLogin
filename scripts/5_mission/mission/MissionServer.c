@@ -28,19 +28,15 @@ modded class MissionServer
 			return;
 
 		vector posXZ = player.GetPosition();
-		float randX;
-		float randZ;
+		float randX = Math.RandomFloatInclusive(2.0, 2.5);
+		float randZ = Math.RandomFloatInclusive(2.0, 2.5);
 
-		// Create fire at random location within 1.2 - 1.5m of player
+		// Create fire at a safe distance and random location within 2.5m of player
 		if (Math.RandomIntInclusive(1, 2) == 1)
-			randX = Math.RandomFloatInclusive(1.2, 1.5);
-		else
-			randX = Math.RandomFloatInclusive(-1.2, -1.5);
+			randX = randX * -1;
 
 		if (Math.RandomIntInclusive(1, 2) == 1)
-			randZ = Math.RandomFloatInclusive(1.2, 1.5);
-		else
-			randZ = Math.RandomFloatInclusive(-1.2, -1.5);
+			randZ = randZ * -1;
 
 		// Get fire surface pos
 		float x = posXZ[0] + randX;
